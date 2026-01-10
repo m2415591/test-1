@@ -1,7 +1,8 @@
 from typing import Tuple
-from domain.order import Order
-from domain.money import Money
-from .interfaces import OrderRepository, PaymentGateway
+from src.domain.order import Order
+from src.domain.money import Money
+from src.domain.order_status import OrderStatus
+from src.application.interfaces import OrderRepository, PaymentGateway
 
 
 class PayOrderUseCase:
@@ -28,15 +29,22 @@ class PayOrderUseCase:
             return False, f"Order {order_id} not found"
         
         try:
-            # 2. Оплачиваем заказ в доменном слое
-            order.pay()
+            # 2. Проверяем, можно ли оплатить заказ (без изменения статуса)
+            if order.status == OrderStatus.PAID:
+                return False, "Order is already paid"
             
-            # 3. Вызываем платежный шлюз
+            if not order.lines:
+                return False, "Cannot pay empty order"
+            
+            # 3. Вызываем платежный шлюз ПЕРЕД изменением статуса
             success = self.payment_gateway.charge(order_id, order.total_amount)
             if not success:
                 return False, "Payment gateway charge failed"
             
-            # 4. Сохраняем обновленный заказ
+            # 4. Только после успешного списания оплачиваем заказ в доменном слое
+            order.pay()
+            
+            # 5. Сохраняем обновленный заказ
             self.order_repository.save(order)
             
             return True, f"Order {order_id} paid successfully. Amount: {order.total_amount.amount}"

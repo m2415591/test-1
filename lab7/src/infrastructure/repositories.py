@@ -1,6 +1,6 @@
 from typing import Dict, Optional
-from domain.order import Order
-from application.interfaces import OrderRepository
+from src.domain.order import Order
+from src.application.interfaces import OrderRepository
 
 
 class InMemoryOrderRepository(OrderRepository):

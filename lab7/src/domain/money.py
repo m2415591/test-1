@@ -4,7 +4,7 @@ from decimal import Decimal
 
 @dataclass(frozen=True)
 class Money:
-    """Value Object for money"""
+    """Value Object для денежных сумм"""
     amount: Decimal
     currency: str = "USD"
     

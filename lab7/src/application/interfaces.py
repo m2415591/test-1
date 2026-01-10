@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from typing import Optional
-from domain.order import Order
-from domain.money import Money
+from src.domain.order import Order
+from src.domain.money import Money
 
 
 class OrderRepository(ABC):

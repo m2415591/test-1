@@ -1,5 +1,5 @@
-from domain.money import Money
-from application.interfaces import PaymentGateway
+from src.domain.money import Money
+from src.application.interfaces import PaymentGateway
 
 
 class FakePaymentGateway(PaymentGateway):

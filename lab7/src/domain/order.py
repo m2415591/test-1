@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import List, Optional
+from typing import List
 from decimal import Decimal
-from .money import Money
-from .order_status import OrderStatus
+from src.domain.money import Money
+from src.domain.order_status import OrderStatus
 
 
 @dataclass
